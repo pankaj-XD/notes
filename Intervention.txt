@@ -1,0 +1,111 @@
+
+------------------------------ IMAGE PROXY / Intervention ------------------------------
+
+------------------------------------------------------------
+
+---------------------   Image Modification ----------------
+
+------------------------------------------------------------
+//***** php composer.phar require intervention/image  *****//
+1.crop 
+ 
+use  Intervention\Image\ImageManagerStatic;
+
+$img = ImageMangerStatic::make('tesla.jpg');
+//crop(height,width);
+$img->crop(400,400);
+//save('path + name',quality); //range of quality - 1(lowest) to 100(highest)
+$img->save('/mod/tesla1.png',5);
+
+
+2. fit in given w
+$img->fit(400);
+
+
+3. grayscale, blur ...etc
+
+$img->fit(400);
+$img->grayscale();
+or 
+$img->fit(400)->grayscale()->blur(10);
+return response('png');
+
+
+------------------------------------------------------------
+
+--------------------- Custome Image Filters ----------------
+
+------------------------------------------------------------
+4. create custome filter
+
+imageFilter.php
+
+namespace App\Helpers;
+
+use Intervention\Image\Image;
+use Intervention\Image\Filters\FilterInterface;
+
+class ImageFilter implements FilterInterface {
+
+   const BLUR_VAL = 10;
+
+   private $blur;
+
+   public function __construct($blur = null){
+	$this->blur = $blur ?? self::BLUR_VAL;	
+   }
+
+
+   public function applyFilter(Image $image){
+
+	return $image->fit(1024)->blur(10)->grayscale();
+	
+   }
+
+
+}
+
+
+//using / calling this fillter in controllers
+$img = ImageMangerStatic::make('tesla.png');
+$img->filter(new ImageFilter());
+$img->filter(new ImageFilter(50));
+return $img->response('png');
+
+
+
+
+
+------------------------------------------------------------
+
+-------------------------- Image Caching -------------------
+
+------------------------------------------------------------
+//***** compser require intervention/imagecache  *****//
+
+//cleaning cache 
+//cache()->flush();
+
+$img = ImageManagerStatic::cache(function($image){
+
+
+ $img = $image->make('tesla.png');
+ $img->filter(new ImageFilter(50));
+
+
+});
+
+return ImageManagerStatic::make($img)->response();
+
+
+
+
+
+
+
+
+
+
+
+
+ 
