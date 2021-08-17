@@ -1,0 +1,83 @@
+=================== Gate's =======================
+
+1. defining gate's
+
+inside boot method of authServiceProvider
+
+Gate::define('task-create', function (User $user) {return $user->isAdmin;});
+Gate::define('task-delete', function (User $user) {return $user->isAdmin;});
+
+
+2. using inside blade
+
+@can('task-create') 
+	#code... 
+@endcan
+
+
+3. using inside controller
+
+$this->authorize('task-create');
+
+================== policy =======================
+1. defining Policy
+
+$ php artisan make:policy TaskPolicy --model=Task
+
+2. creating method's inside policy class
+
+//-----delete permission
+public function delete(User $user, Task $task)
+{	
+   return $user->isAdmin || (auth()->check() &&  auth()->id() === $task->user_id)  ;   
+}
+
+//-----create permission
+public function create(User $user)
+{
+   return $user->isAdmin;
+}
+
+3.using in blade
+@can('update', $post)
+<!-- User can update post. -->
+<!-- $post is the model, which refers to use PostPolicy::class -->
+@endcan
+@can('create', \App\Post::class)
+<!-- User can create post. -->
+<!-- \App\Post::class refers to use PostPolicy::class -->
+@endcan
+@cannot('create', \App\Post::class)
+<!-- User cannot create post. -->
+<!-- \App\Post::class refers to use PostPolicy::class -->
+@endcannot
+
+
+4. using in controller
+ $this->authorize('create',Task::class); //method_name , TaskMode or Id
+
+5. directly in model
+User::find($id)->can('update', Post::find(20));
+User::find($id)->cannot('update', Post::find(20));
+User::find($id)->cant('edit', Post::find(20));
+auth()->user()->can('delete', Post::find(20));
+
+
+
+============ with Sperate Roles Table ================
+"users" table with role column , ---- user->role_id
+"roles" table with role column , ---- id, role eg: id 1, role user, eg:id 2 , role manager
+
+
+inside policy's class, we have to check for
+// retun $user->role_id == 2; :--- not recommended
+
+inside Role model class ,add
+public const IS_MANAGER = 1;
+public const IS_USER = 1;
+
+// return $user->role_id == Role::IS_MANAGER;   :---- recommended
+
+ 
+
+
