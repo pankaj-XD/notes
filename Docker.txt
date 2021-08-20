@@ -1,0 +1,24 @@
+sudo apt install docker.io
+
+docker --version 
+
+
+//status check
+sudo systemctl status docker
+
+
+
+//enable
+sudo systemctl enable --now docker
+
+
+//test docker 
+sudo r run hello-world
+
+//list of images
+sudo docker images
+
+
+
+//check runnung container 
+//docker ps
