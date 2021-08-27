@@ -1,0 +1,40 @@
+//--------------------------------------
+
+		Socket 101
+
+----------------------------------------//
+
+1. ----------- connect to socket -----------
+const socket = new WebSocket('ws://localhost:3000/websocket'); 
+
+2.
+ ----------- add a listener -----------
+
+socket.addEventListener('open', e => {
+
+    socket.send(JSON.stringify({
+        "msg": "connect",
+        "version": "1",
+        "support": ["1"]
+    }))
+
+    socket.onmessage = function (event) {
+        console.log(JSON.parse(event.data));
+    }
+});
+
+
+3. -----------  send data/req  ----------- 
+
+    socket.send(JSON.stringify({
+    	"msg": "method",
+        "method": "rooms/get",
+        "id": "42",
+        "params": [ { "$date": new Date() } ]
+    }))
+
+4. -----------  listen for reponse -----------
+
+    socket.onmessage = function (event) {
+        console.log(JSON.parse(event.data));
+    }
