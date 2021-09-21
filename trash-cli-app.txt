@@ -1,0 +1,24 @@
+
+
+###################
+LOLCAT - setup
+###################
+- apt-get install ruby	
+- ruby --version
+
+# wget https://github.com/busyloop/lolcat/archive/master.zip
+# unzip master.zip
+# cd lolcat-master/bin
+# gem install lolcat
+
+# lolcat --version
+
+# lolcat -h
+# ps | lolcat
+# date | lolcat
+# cal | lolcat
+# lolcat test.sh
+# echo hello  | lolcat
+
+
+
