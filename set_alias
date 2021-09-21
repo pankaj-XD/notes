@@ -1,0 +1,17 @@
+###################
+SET Alias 
+###################
+
+see a list of defined aliases on your profile
+# alias
+
+Creating Temporary Aliases
+# alias shortName="your custom command here"
+# alias wr=”cd /var/www/html”
+
+Creating Permanent Aliases
+all alias are present inside "Bash – ~/.bashrc" near "#My custom aliases" cmt. 
+
+alias lx="l | lolcat"
+alias s2w="cd /home/cbl-pc-002/Desktop/workspace"
+
